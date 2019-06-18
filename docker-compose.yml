@@ -1,0 +1,51 @@
+version: "2.1"
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    depends_on:
+      mysql:
+        condition: service_healthy
+    entrypoint:
+      - /usr/local/bin/docker-entrypoint.sh
+    volumes:
+      - ./backend:/backend
+    ports:
+      - "3000:3000"
+    working_dir: /backend
+  
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "8000:8000"
+      - "35729:35729"
+    volumes:
+      - ./frontend:/frontend
+    environment:
+      - API_HOST=backend
+      - CHOKIDAR_USEPOLLING=true
+    working_dir: /frontend
+    healthcheck:
+      test: "exit 0"
+    depends_on:
+      - backend
+
+  mysql:
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    container_name: mysql
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - ./mysql/mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: "exit 0"
