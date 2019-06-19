@@ -5,6 +5,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: backend
+    links:
+      - redis
     depends_on:
       mysql:
         condition: service_healthy
@@ -34,6 +36,11 @@ services:
       test: "exit 0"
     depends_on:
       - backend
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
 
   mysql:
     build:
