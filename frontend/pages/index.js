@@ -10,16 +10,16 @@ const Index = () => {
     threads.on('add_thread_client', (data) => {
       console.log(data);
     });
-    locations.emit('thread_join', { thread_id: 2 });
+    locations.emit('thread_join', { thread_id: 4 });
     locations.emit('upsert_location', {
-      user_id: 4, thread_id: 2, latitude: 35.689487, longitude: 139.691711
+      user_id: 4, thread_id: 4, latitude: 35.689487, longitude: 139.691711
     });
     locations.on('upsert_location_client', (data) => {
       console.log(data.location);
     });
-    comments.emit('thread_join', { thread_id: 1 });
+    comments.emit('thread_join', { thread_id: 4 });
     comments.emit('add_comment', {
-      comment: 'commmmmennnnnnnnt!', user_id: 4, thread_id: 1
+      comment: 'commmmmennnnnnnnt!', user_id: 4, thread_id: 4
     });
     comments.on('add_comment_client', (data) => {
       console.log(data.comment);

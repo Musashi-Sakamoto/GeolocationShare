@@ -4,8 +4,6 @@ module.exports = (io) => {
   const comments = io.of('/comments');
   comments.on('connection', (socket) => {
     socket.on('thread_join', (data) => {
-      console.log(data);
-
       socket.join(data.thread_id);
     });
 
