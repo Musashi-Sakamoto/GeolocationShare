@@ -4,8 +4,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  const { io } = res;
-  io.emit('socketToMe', 'socket!!');
+  res.render('index', { title: 'Express' });
 });
 
 module.exports = router;

@@ -3,10 +3,10 @@
 /**
  * Module dependencies.
  */
-
 var debug = require('debug')('backend:server');
-var { app, server } = require('../app');
-
+var http = require('http');
+var app = require('../app');
+const socketAPI = require('../websocket/socket_api');
 /**
  * Get port from environment and store in Express.
  */
@@ -17,6 +17,8 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
+var server = http.createServer(app);
+socketAPI.io.attach(server);
 
 /**
  * Listen on provided port, on all network interfaces.

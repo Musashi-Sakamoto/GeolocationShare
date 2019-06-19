@@ -6,24 +6,12 @@ var logger = require('morgan');
 
 var app = express();
 
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-
-io.on('connection', (socket) => {
-  socket.emit('socketToMe', 'socket to me');
-});
-
-app.use((req, res, next) => {
-  res.io = io;
-  next();
-});
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -57,7 +45,4 @@ app.use((err, req, res, next) => {
   res.render('error');
 });
 
-module.exports = {
-  app,
-  server
-};
+module.exports = app;
