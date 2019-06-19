@@ -21,6 +21,12 @@ module.exports = (sequelize, DataTypes) => {
       foreignKeyConstraint: true
     });
 
+    models.user.hasMany(models.thread, {
+      foreignKey: 'user_id',
+      targetKey: 'id',
+      foreignKeyConstraint: true
+    });
+
     models.user.hasOne(models.token, {
       foreignKey: 'user_id',
       foreignKeyConstraint: true
