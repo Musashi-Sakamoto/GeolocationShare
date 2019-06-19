@@ -1,7 +1,10 @@
 const router = require('express-promise-router')();
 
-const threadController = require('../controllers/threadsController');
+const threadsController = require('../controllers/threadsController');
+const locationsController = require('../controllers/locationsController');
 
-router.get('/threads', threadController.list);
+router.get('/threads', threadsController.list);
+
+router.get('/locations', locationsController.list);
 
 module.exports = router;
