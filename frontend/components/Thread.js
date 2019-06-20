@@ -61,13 +61,15 @@ const Thread = ({
             <DialogTitle id="form-dialog-title">Thread 1</DialogTitle>
             <DialogContent>
                 <List>
-                    {comments.map((data, i) => (
+                    {comments.map((comment, i) => (
                         <ListItem key={i}>
-                        <ListItemText primary={data.comment}/>
-                    </ListItem>
+                            <ListItemText primary={comment}/>
+                        </ListItem>
                     ))}
                 </List>
-                <TextField
+            </DialogContent>
+            <DialogActions>
+            <TextField
                 value={title}
                 onChange={e => setTitle(e.target.value)}
                 autoFocus
@@ -77,8 +79,6 @@ const Thread = ({
                 type="text"
                 fullWidth
                 />
-            </DialogContent>
-            <DialogActions>
                 <Button onClick={onSubmitClicked} color="primary">
                     Submit
                 </Button>

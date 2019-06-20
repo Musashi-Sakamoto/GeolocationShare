@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import Router from 'next/router';
 import io from 'socket.io-client';
 import cookies from 'next-cookies';
 import { withSnackbar } from 'notistack';
 import { withStyles } from '@material-ui/core/styles';
 
+import { Store } from '../utils/Store';
 import Map from '../components/map/Map';
 import Navbar from '../components/Navbar';
 
@@ -20,6 +21,7 @@ const styles = theme => ({
 
 const Index = (props) => {
   const { token, classes } = props;
+  const { state, dispatch } = useContext(Store);
   const comments = io('http://localhost:3000/comments', { query: `auth_token=${token}` });
   const locations = io('http://localhost:3000/locations', { query: `auth_token=${token}` });
   const threads = io('http://localhost:3000/threads', { query: `auth_token=${token}` });
@@ -30,6 +32,10 @@ const Index = (props) => {
     });
     comments.on('add_comment_client', (data) => {
       console.log(data.comment);
+      dispatch({
+        type: 'ADD_COMMENT',
+        payload: data.comment
+      });
     });
   };
 
@@ -59,7 +65,7 @@ const Index = (props) => {
     <div className={classes.root}>
       <Navbar isLoggedIn token={token} />
       <div className={classes.container}>
-        <Map postComment={postComment} threadJoin={threadJoin} threadLeave={threadLeave} comments={[]} />
+        <Map postComment={postComment} threadJoin={threadJoin} threadLeave={threadLeave} comments={state.comments} />
       </div>
     </div>
   );

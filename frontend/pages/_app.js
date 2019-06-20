@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { SnackbarProvider } from 'notistack';
 import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { StoreProvider } from '../utils/Store';
 import theme from '../src/theme';
 
 class MyApp extends App {
@@ -20,16 +21,18 @@ class MyApp extends App {
 
     return (
       <Container>
-        <Head>
-          <title>My page</title>
-        </Head>
-        <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <SnackbarProvider>
-            <Component {...pageProps} />
-          </SnackbarProvider>
-        </ThemeProvider>
+        <StoreProvider>
+          <Head>
+            <title>My page</title>
+          </Head>
+          <ThemeProvider theme={theme}>
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
+            <SnackbarProvider>
+              <Component {...pageProps} />
+            </SnackbarProvider>
+          </ThemeProvider>
+        </StoreProvider>
       </Container>
     );
   }
