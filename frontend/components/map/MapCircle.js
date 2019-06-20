@@ -1,18 +1,34 @@
-import React from 'react';
+import React, { Fragment, useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { Circle } from '@react-google-maps/api';
+import { Circle, InfoWindow } from '@react-google-maps/api';
+
+import Thread from '../Thread';
 
 const styles = () => ({
 
 });
 
 const MapCircle = (props) => {
+  const [isThreadOpen, setThreadOpen] = useState(false);
+
   const {
     classes
   } = props;
 
   return (
-    <Circle
+    <Fragment>
+      <Thread isOpen={isThreadOpen} onClose={() => setThreadOpen(false)}/>
+      <InfoWindow
+      onLoad={(infoWindow) => {
+        console.log('infoWindow: ', infoWindow);
+      }}
+      position={{ lat: 35.689487, lng: 139.691711 }}
+    >
+      <button onClick={() => setThreadOpen(true)}>
+        Thread
+      </button>
+    </InfoWindow>
+      <Circle
         center={{
           lat: 35.689487,
           lng: 139.691711
@@ -31,6 +47,7 @@ const MapCircle = (props) => {
           zIndex: 1
         }}
     />
+    </Fragment>
   );
 };
 
