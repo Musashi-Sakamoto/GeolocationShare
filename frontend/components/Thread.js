@@ -36,16 +36,19 @@ const styles = theme => ({
 });
 
 const Thread = ({
-  classes, onSubmit, isOpen, onClose, editedPost, width
+  classes, onSubmit, isOpen, onClose, enqueueSnackbar
 }) => {
   const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
 
-
-  useEffect(() => {
-    setTitle(editedPost ? editedPost.title : '');
-    setDescription(editedPost ? editedPost.description : '');
-  }, [editedPost]);
+  const onSubmitClicked = () => {
+    if (title.trim().length === 0) {
+      enqueueSnackbar('title or description should not be blank', { variant: 'error' });
+      return;
+    }
+    onSubmit(title, 1);
+    setTitle('');
+    onClose(true);
+  };
 
   return (
     <div>
@@ -54,7 +57,7 @@ const Thread = ({
             onClose={onClose}
             aria-labelledby="form-dialog-title"
             >
-            <DialogTitle id="form-dialog-title">{editedPost !== null ? 'Edit' : 'Post'}</DialogTitle>
+            <DialogTitle id="form-dialog-title">Thread 1</DialogTitle>
             <DialogContent>
             <TextField
             value={title}
@@ -66,22 +69,10 @@ const Thread = ({
               type="text"
               fullWidth
             />
-            <TextField
-            value={description}
-            onChange={e => setDescription(e.target.value)}
-              autoFocus
-              margin="dense"
-              id="description"
-              label="description"
-              type="text"
-              multiline={true}
-              rows={isWidthDown('sm', width) ? 2 : 5}
-              fullWidth
-            />
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose} color="primary">
-                    Cancel
+                <Button onClick={onSubmitClicked} color="primary">
+                    Submit
                 </Button>
           </DialogActions>
         </Dialog>

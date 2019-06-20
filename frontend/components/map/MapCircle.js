@@ -12,19 +12,29 @@ const MapCircle = (props) => {
   const [isThreadOpen, setThreadOpen] = useState(false);
 
   const {
-    classes
+    classes, postComment, threadJoin, threadLeave
   } = props;
+
+  const onClickThread = () => {
+    threadJoin(1);
+    setThreadOpen(true);
+  };
+
+  const onCloseThread = () => {
+    threadLeave(1);
+    setThreadOpen(false);
+  };
 
   return (
     <Fragment>
-      <Thread isOpen={isThreadOpen} onClose={() => setThreadOpen(false)}/>
+      <Thread isOpen={isThreadOpen} onClose={onCloseThread} onSubmit={postComment} />
       <InfoWindow
       onLoad={(infoWindow) => {
         console.log('infoWindow: ', infoWindow);
       }}
       position={{ lat: 35.689487, lng: 139.691711 }}
     >
-      <button onClick={() => setThreadOpen(true)}>
+      <button onClick={onClickThread}>
         Thread
       </button>
     </InfoWindow>

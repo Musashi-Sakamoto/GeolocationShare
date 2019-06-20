@@ -30,6 +30,9 @@
         ],
         "react/prop-types": [
             "off"
+        ],
+        "camelcase": [
+            "off"
         ]
     }
 }

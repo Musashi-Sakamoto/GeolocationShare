@@ -7,13 +7,19 @@ module.exports = (io) => {
       socket.join(data.thread_id);
     });
 
+    socket.on('thread_leave', (data) => {
+      console.log('leave');
+      socket.leave(data.thread_id);
+    });
+
+
     socket.on('add_comment', async (data) => {
-      const { user_id, thread_id, comment } = data;
+      const { thread_id, comment } = data;
 
       let createdComment;
       try {
         createdComment = await Comment.create({
-          user_id,
+          user_id: socket.request.user.id,
           thread_id,
           comment
         });
@@ -23,6 +29,8 @@ module.exports = (io) => {
         comments.to(data.thread_id).emit('add_comment_client', { error });
         return;
       }
+      console.log(`createdComment: ${createdComment}`);
+
       comments.to(data.thread_id).emit('add_comment_client', { comment: createdComment });
     });
   });

@@ -13,7 +13,7 @@ const styles = () => ({
 
 const Map = (props) => {
   const {
-    classes
+    classes, postComment, threadJoin, threadLeave
   } = props;
 
   return (
@@ -34,7 +34,7 @@ const Map = (props) => {
               lat: 35.689487,
               lng: 139.691711
             }}>
-          <MapCircle />
+          <MapCircle postComment={postComment} threadJoin={threadJoin} threadLeave={threadLeave} />
         </GoogleMap>
     </LoadScriptNext>
 

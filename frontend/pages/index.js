@@ -20,11 +20,28 @@ const styles = theme => ({
 
 const Index = (props) => {
   const { token, classes } = props;
+  const comments = io('http://localhost:3000/comments', { query: `auth_token=${token}` });
+  const locations = io('http://localhost:3000/locations', { query: `auth_token=${token}` });
+  const threads = io('http://localhost:3000/threads', { query: `auth_token=${token}` });
+
+  const postComment = (comment, thread_id) => {
+    comments.emit('add_comment', {
+      comment, thread_id
+    });
+    comments.on('add_comment_client', (data) => {
+      console.log(data.comment);
+    });
+  };
+
+  const threadJoin = (thread_id) => {
+    comments.emit('thread_join', { thread_id });
+  };
+
+  const threadLeave = (thread_id) => {
+    comments.emit('thread_leave', { thread_id });
+  };
 
   useEffect(() => {
-    const comments = io('http://localhost:3000/comments', { query: `auth_token=${token}` });
-    const locations = io('http://localhost:3000/locations', { query: `auth_token=${token}` });
-    const threads = io('http://localhost:3000/threads', { query: `auth_token=${token}` });
     threads.emit('add_thread', { title: 'threaddddd', user_id: 4 });
     threads.on('add_thread_client', (data) => {
       console.log(data);
@@ -36,20 +53,13 @@ const Index = (props) => {
     locations.on('upsert_location_client', (data) => {
       console.log(data.location);
     });
-    comments.emit('thread_join', { thread_id: 1 });
-    comments.emit('add_comment', {
-      comment: 'commmmmennnnnnnnt!', user_id: 4, thread_id: 1
-    });
-    comments.on('add_comment_client', (data) => {
-      console.log(data.comment);
-    });
   }, []);
 
   return (
     <div className={classes.root}>
       <Navbar isLoggedIn token={token} />
       <div className={classes.container}>
-        <Map />
+        <Map postComment={postComment} threadJoin={threadJoin} threadLeave={threadLeave} />
       </div>
     </div>
   );
