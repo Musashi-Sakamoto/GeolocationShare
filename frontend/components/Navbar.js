@@ -29,7 +29,7 @@ const Navbar = (props) => {
     cookie.remove('token');
     Router.push('/login');
     try {
-      await axios.get(`${process.env.BACKEND_URL}/logout`, {
+      await axios.get(`${process.env.API_HOST}/logout`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
