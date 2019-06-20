@@ -12,7 +12,7 @@ const MapCircle = (props) => {
   const [isThreadOpen, setThreadOpen] = useState(false);
 
   const {
-    classes, postComment, threadJoin, threadLeave
+    classes, postComment, threadJoin, threadLeave, comments
   } = props;
 
   const onClickThread = () => {
@@ -27,7 +27,7 @@ const MapCircle = (props) => {
 
   return (
     <Fragment>
-      <Thread isOpen={isThreadOpen} onClose={onCloseThread} onSubmit={postComment} />
+      <Thread isOpen={isThreadOpen} onClose={onCloseThread} onSubmit={postComment} comments={comments} />
       <InfoWindow
       onLoad={(infoWindow) => {
         console.log('infoWindow: ', infoWindow);

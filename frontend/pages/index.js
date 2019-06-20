@@ -59,7 +59,7 @@ const Index = (props) => {
     <div className={classes.root}>
       <Navbar isLoggedIn token={token} />
       <div className={classes.container}>
-        <Map postComment={postComment} threadJoin={threadJoin} threadLeave={threadLeave} />
+        <Map postComment={postComment} threadJoin={threadJoin} threadLeave={threadLeave} comments={[]} />
       </div>
     </div>
   );
