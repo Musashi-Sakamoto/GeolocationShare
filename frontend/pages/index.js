@@ -5,8 +5,7 @@ import cookies from 'next-cookies';
 import { withSnackbar } from 'notistack';
 import { withStyles } from '@material-ui/core/styles';
 
-import { GoogleMap, LoadScriptNext } from '@react-google-maps/api';
-
+import Map from '../components/map/Map';
 import Navbar from '../components/Navbar';
 
 const styles = theme => ({
@@ -15,10 +14,6 @@ const styles = theme => ({
   },
   container: {
     marginTop: 64
-  },
-  map: {
-    marginTop: 100,
-    margin: 'auto'
   }
 });
 
@@ -54,26 +49,7 @@ const Index = (props) => {
     <div className={classes.root}>
       <Navbar isLoggedIn token={token} />
       <div className={classes.container}>
-        <LoadScriptNext
-          id="script-loader"
-          googleMapsApiKey="AIzaSyBINH50APdvfKgr45-beNiIJyOJngeAuSY"
-          googleMapsClientId
-          >
-            <GoogleMap
-              id="google-map"
-              mapContainerClassName={classes.map}
-              mapContainerStyle={{
-                height: 800,
-                width: 1200
-              }}
-              zoom={20}
-              center={{
-                lat: 35.689487,
-                lng: 139.691711
-              }}>
-
-              </GoogleMap>
-        </LoadScriptNext>
+        <Map />
       </div>
     </div>
   );
