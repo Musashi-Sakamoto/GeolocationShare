@@ -5,8 +5,15 @@ import cookies from 'next-cookies';
 import { withSnackbar } from 'notistack';
 import { withStyles } from '@material-ui/core/styles';
 
-const styles = theme => ({
+import Navbar from '../components/Navbar';
 
+const styles = theme => ({
+  root: {
+    position: 'relative'
+  },
+  container: {
+    marginTop: 64
+  }
 });
 
 
@@ -38,8 +45,9 @@ const Index = (props) => {
   }, []);
 
   return (
-        <div>
-        <p>Hello Next.js</p>
+    <div className={classes.root}>
+      <Navbar isLoggedIn token={token} />
+      <div className={classes.container}>Hello Next.js</div>
     </div>
   );
 };
