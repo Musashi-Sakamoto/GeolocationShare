@@ -9,6 +9,7 @@
     "clsx": "latest",
     "js-cookie": "^2.2.0",
     "next": "latest",
+    "next-cookies": "^1.1.2",
     "notistack": "^0.8.6",
     "prop-types": "latest",
     "react": "latest",

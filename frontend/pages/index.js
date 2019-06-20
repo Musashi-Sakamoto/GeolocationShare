@@ -1,36 +1,63 @@
-import React from 'react';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import MuiLink from '@material-ui/core/Link';
-import ProTip from '../src/ProTip';
-import Link from '../src/Link';
+import React, { useEffect } from 'react';
+import Router from 'next/router';
+import io from 'socket.io-client';
+import cookies from 'next-cookies';
+import { withSnackbar } from 'notistack';
+import { withStyles } from '@material-ui/core/styles';
 
-function MadeWithLove() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Built with love by the '}
-      <MuiLink color="inherit" href="https://material-ui.com/">
-        Material-UI
-      </MuiLink>
-      {' team.'}
-    </Typography>
-  );
-}
+const styles = theme => ({
 
-export default function Index() {
+});
+
+
+const Index = (props) => {
+  const { token, classes } = props;
+
+  useEffect(() => {
+    const comments = io('http://localhost:3000/comments', { query: `auth_token=${token}` });
+    const locations = io('http://localhost:3000/locations', { query: `auth_token=${token}` });
+    const threads = io('http://localhost:3000/threads', { query: `auth_token=${token}` });
+    threads.emit('add_thread', { title: 'threaddddd', user_id: 4 });
+    threads.on('add_thread_client', (data) => {
+      console.log(data);
+    });
+    locations.emit('thread_join', { thread_id: 1 });
+    locations.emit('upsert_location', {
+      user_id: 4, thread_id: 1, latitude: 35.689487, longitude: 139.691711
+    });
+    locations.on('upsert_location_client', (data) => {
+      console.log(data.location);
+    });
+    comments.emit('thread_join', { thread_id: 1 });
+    comments.emit('add_comment', {
+      comment: 'commmmmennnnnnnnt!', user_id: 4, thread_id: 1
+    });
+    comments.on('add_comment_client', (data) => {
+      console.log(data.comment);
+    });
+  }, []);
+
   return (
-    <Container maxWidth="sm">
-      <Box my={4}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Next.js v4-beta example
-        </Typography>
-        <Link href="/about" color="secondary">
-          Go to the about page
-        </Link>
-        <ProTip />
-        <MadeWithLove />
-      </Box>
-    </Container>
+        <div>
+        <p>Hello Next.js</p>
+    </div>
   );
-}
+};
+
+Index.getInitialProps = (ctx) => {
+  const { token } = cookies(ctx);
+  if (ctx.req && !token) {
+    ctx.res.writeHead(302, {
+      Location: '/login'
+    });
+    ctx.res.end();
+    return {};
+  }
+  if (!token) {
+    Router.push('/login');
+    return {};
+  }
+  return { token };
+};
+
+export default withSnackbar(withStyles(styles)(Index));
