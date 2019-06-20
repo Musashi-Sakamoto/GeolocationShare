@@ -10,7 +10,7 @@ const LoginForm = (props) => {
   const onLoginClicked = async (username, password) => {
     let res;
     try {
-      res = await axios.post(`${process.env.BACKEND_URL}/login`, {
+      res = await axios.post(`${process.env.API_HOST}/login`, {
         username,
         password
       });

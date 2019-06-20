@@ -9,7 +9,7 @@ const SignupForm = (props) => {
   const onSignupClicked = async (email, name, password) => {
     let res;
     try {
-      res = await axios.post(`${process.env.BACKEND_URL}/users`, {
+      res = await axios.post(`${process.env.API_HOST}/users`, {
         name,
         password,
         email
