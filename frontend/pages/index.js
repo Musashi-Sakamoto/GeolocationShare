@@ -30,13 +30,6 @@ const Index = (props) => {
     comments.emit('add_comment', {
       comment, thread_id
     });
-    comments.on('add_comment_client', (data) => {
-      console.log(data.comment);
-      dispatch({
-        type: 'ADD_COMMENT',
-        payload: data.comment
-      });
-    });
   };
 
   const threadJoin = (thread_id) => {
@@ -48,6 +41,17 @@ const Index = (props) => {
   };
 
   useEffect(() => {
+    comments.on('add_comment_client', (data) => {
+      comments.emit('get_comments', {
+        thread_id: data.comment.thread_id
+      });
+    });
+    comments.on('get_comments_client', (data) => {
+      dispatch({
+        type: 'FETCH_COMMENTS',
+        payload: data
+      });
+    });
     threads.emit('add_thread', { title: 'threaddddd', user_id: 4 });
     threads.on('add_thread_client', (data) => {
       console.log(data);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -8,32 +8,16 @@ import { withSnackbar } from 'notistack';
 import Button from '@material-ui/core/Button';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import {
-  List, ListItem, ListItemText, TextField
+  List, ListItem, ListItemText, TextField, Divider
 } from '@material-ui/core';
 
 const styles = theme => ({
-  container: {
-    display: 'flex',
-    marginTop: 64,
-    paddingTop: 100
+  paper: {
+    height: 500,
+    width: 600
   },
-  formContainer: {
-    margin: 'auto'
-  },
-  TextField: {
-    display: 'block'
-  },
-  button: {
-    marginTop: 20
-  },
-  input: {
-    display: 'none'
-  },
-  previewImage: {
-    maxWidth: 552,
-    [theme.breakpoints.down('sm')]: {
-      width: '100%'
-    }
+  textField: {
+    width: '80%'
   }
 });
 
@@ -54,17 +38,23 @@ const Thread = ({
   return (
     <div>
         <Dialog
+            classes={{
+              paper: classes.paper
+            }}
             open={isOpen}
             onClose={onClose}
             aria-labelledby="form-dialog-title"
             >
             <DialogTitle id="form-dialog-title">Thread 1</DialogTitle>
             <DialogContent>
-                <List>
-                    {comments.map((comment, i) => (
-                        <ListItem key={i}>
-                            <ListItemText primary={comment}/>
-                        </ListItem>
+                <List >
+                    {comments.map((data, i) => (
+                        <Fragment key={i}>
+                            <ListItem>
+                                <ListItemText primary={data.comment}/>
+                            </ListItem>
+                            <Divider variant="fullWidth" component="li" />
+                        </Fragment>
                     ))}
                 </List>
             </DialogContent>
@@ -78,6 +68,9 @@ const Thread = ({
                 label="title"
                 type="text"
                 fullWidth
+                classes={{
+                  root: classes.textField
+                }}
                 />
                 <Button onClick={onSubmitClicked} color="primary">
                     Submit
