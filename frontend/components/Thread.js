@@ -8,7 +8,7 @@ import { withSnackbar } from 'notistack';
 import Button from '@material-ui/core/Button';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import {
-  List, ListItem, ListItemText, TextField, Divider
+  List, ListItem, ListItemText, TextField, Divider, Typography
 } from '@material-ui/core';
 
 const styles = theme => ({
@@ -51,7 +51,14 @@ const Thread = ({
                     {comments.map((data, i) => (
                         <Fragment key={i}>
                             <ListItem>
-                                <ListItemText primary={data.comment}/>
+                                <ListItemText primary={data.comment} secondary={
+                                    <Fragment>
+                                        <Typography component="span" variant="body2" color="textPrimary">
+                                            {data.user.username}
+                                        </Typography>
+                                        {'     '}{data.createdAt}
+                                    </Fragment>
+                                }/>
                             </ListItem>
                             <Divider variant="fullWidth" component="li" />
                         </Fragment>
