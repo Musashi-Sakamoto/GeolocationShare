@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { GoogleMap, LoadScriptNext } from '@react-google-maps/api';
 
@@ -13,7 +13,7 @@ const styles = () => ({
 
 const Map = (props) => {
   const {
-    classes, postComment, threadJoin, threadLeave, comments
+    classes, postComment, threadJoin, threadLeave, comments, locations, currentLocation
   } = props;
 
   return (
@@ -31,10 +31,12 @@ const Map = (props) => {
             }}
             zoom={20}
             center={{
-              lat: 35.689487,
-              lng: 139.691711
+              lat: currentLocation.latitude,
+              lng: currentLocation.longitude
             }}>
-          <MapCircle postComment={postComment} threadJoin={threadJoin} threadLeave={threadLeave} comments={comments} />
+              {locations.map((location, i) => (
+                <MapCircle key={i} currentLocation={currentLocation} postComment={postComment} threadJoin={threadJoin} threadLeave={threadLeave} comments={comments} location={location} />
+              ))}
         </GoogleMap>
     </LoadScriptNext>
 

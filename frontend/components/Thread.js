@@ -22,7 +22,7 @@ const styles = theme => ({
 });
 
 const Thread = ({
-  classes, onSubmit, isOpen, onClose, enqueueSnackbar, comments
+  classes, onSubmit, isOpen, onClose, enqueueSnackbar, comments, location
 }) => {
   const [title, setTitle] = useState('');
 
@@ -45,7 +45,7 @@ const Thread = ({
             onClose={onClose}
             aria-labelledby="form-dialog-title"
             >
-            <DialogTitle id="form-dialog-title">Thread 1</DialogTitle>
+            <DialogTitle id="form-dialog-title">{location.user.username}</DialogTitle>
             <DialogContent>
                 <List >
                     {comments.map((data, i) => (

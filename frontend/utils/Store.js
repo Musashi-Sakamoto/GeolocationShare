@@ -4,11 +4,14 @@ export const Store = React.createContext();
 
 const initialState = {
   comments: [],
-  locations: []
+  locations: [],
+  currentLocation: {}
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case 'FETCH_CURRENT_LOCATION':
+      return { ...state, currentLocation: action.payload.current_location };
     case 'FETCH_COMMENTS':
       return { ...state, comments: action.payload.comments };
     case 'FETCH_LOCATIONS':
@@ -20,7 +23,6 @@ const reducer = (state, action) => {
 
 export const StoreProvider = (props) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
-  console.log(state);
 
   const value = { state, dispatch };
   return <Store.Provider value={value}>{props.children}</Store.Provider>;

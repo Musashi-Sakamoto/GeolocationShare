@@ -41,6 +41,30 @@ const Index = (props) => {
   };
 
   useEffect(() => {
+    locations.emit('get_current_location');
+    locations.on('get_current_location_client', (data) => {
+      console.log(`current_location: ${data.current_location.user.id}`);
+      dispatch({
+        type: 'FETCH_CURRENT_LOCATION',
+        payload: data
+      });
+    });
+    locations.emit('get_locations');
+    locations.on('get_locations_client', (data) => {
+      console.log(`locations: ${data.locations}`);
+
+      dispatch({
+        type: 'FETCH_LOCATIONS',
+        payload: data
+      });
+    });
+    locations.emit('upsert_location', {
+      latitude: 35.689487, longitude: 139.691711
+    });
+    locations.on('upsert_location_client', (data) => {
+      locations.emit('get_current_location');
+      locations.emit('get_locations');
+    });
     comments.on('add_comment_client', (data) => {
       comments.emit('get_comments', {
         to_user_id: data.comment.to_user_id
@@ -52,19 +76,13 @@ const Index = (props) => {
         payload: data
       });
     });
-    locations.emit('upsert_location', {
-      user_id: 4, latitude: 35.689487, longitude: 139.691711
-    });
-    locations.on('upsert_location_client', (data) => {
-      console.log(data.location);
-    });
   }, []);
 
   return (
     <div className={classes.root}>
       <Navbar isLoggedIn token={token} />
       <div className={classes.container}>
-        <Map postComment={postComment} threadJoin={threadJoin} threadLeave={threadLeave} comments={state.comments} />
+        <Map postComment={postComment} threadJoin={threadJoin} threadLeave={threadLeave} comments={state.comments} locations={state.locations} currentLocation={state.currentLocation}/>
       </div>
     </div>
   );
