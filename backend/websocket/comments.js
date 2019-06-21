@@ -4,8 +4,10 @@ const User = require('../models').user;
 module.exports = (io) => {
   const comments = io.of('/comments');
   comments.on('connection', (socket) => {
-    socket.on('thread_join', (data) => {
+    socket.on('thread_join', (data, callback) => {
+      console.log('join');
       socket.join(data.to_user_id);
+      callback();
     });
 
     socket.on('thread_leave', (data) => {
@@ -43,6 +45,8 @@ module.exports = (io) => {
 
 
     socket.on('add_comment', async (data) => {
+      console.log(`login user id: ${socket.request.user.id}`);
+
       const { to_user_id, comment } = data;
 
       let createdComment;

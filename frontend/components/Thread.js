@@ -56,7 +56,7 @@ const Thread = ({
                                         <Typography component="span" variant="body2" color="textPrimary">
                                             {data.user.username}
                                         </Typography>
-                                        {'     '}{data.createdAt}
+                                        {' '}{data.createdAt}
                                     </Fragment>
                                 }/>
                             </ListItem>

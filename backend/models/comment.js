@@ -13,12 +13,6 @@ module.exports = (sequelize, DataTypes) => {
       targetKey: 'id',
       foreignKeyConstraint: true
     });
-
-    models.comment.belongsTo(models.user, {
-      foreignKey: 'to_user_id',
-      targetKey: 'id',
-      foreignKeyConstraint: true
-    });
   };
   return comment;
 };

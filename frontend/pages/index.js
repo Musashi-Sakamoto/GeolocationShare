@@ -29,18 +29,6 @@ const Index = (props) => {
     comments.emit('add_comment', {
       comment, to_user_id
     });
-  };
-
-  const threadJoin = (to_user_id) => {
-    console.log(`to_user_id: ${to_user_id}`);
-    comments.emit('thread_join', { to_user_id });
-  };
-
-  const threadLeave = (to_user_id) => {
-    comments.emit('thread_leave', { to_user_id });
-  };
-
-  useEffect(() => {
     comments.on('add_comment_client', (data) => {
       comments.emit('get_comments', {
         to_user_id: data.comment.to_user_id
@@ -52,6 +40,28 @@ const Index = (props) => {
         payload: data
       });
     });
+  };
+
+  const threadJoin = (to_user_id) => {
+    console.log(`to_user_id: ${to_user_id}`);
+    comments.emit('thread_join', { to_user_id }, () => {
+      comments.emit('get_comments', {
+        to_user_id
+      });
+    });
+    comments.on('get_comments_client', (data) => {
+      dispatch({
+        type: 'FETCH_COMMENTS',
+        payload: data
+      });
+    });
+  };
+
+  const threadLeave = (to_user_id) => {
+    comments.emit('thread_leave', { to_user_id });
+  };
+
+  useEffect(() => {
     locations.emit('get_current_location');
     locations.on('get_current_location_client', (data) => {
       console.log(`current_location: ${data.current_location.user.id}`);
