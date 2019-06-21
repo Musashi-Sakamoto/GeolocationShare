@@ -16,12 +16,12 @@ const MapCircle = (props) => {
   } = props;
 
   const onClickThread = () => {
-    threadJoin(1);
+    threadJoin(4);
     setThreadOpen(true);
   };
 
   const onCloseThread = () => {
-    threadLeave(1);
+    threadLeave(4);
     setThreadOpen(false);
   };
 

@@ -43,7 +43,6 @@ io.use(jwtAuth.authenticate({
 
 require('./comments')(io);
 require('./locations')(io);
-require('./threads')(io);
 
 module.exports = {
   io

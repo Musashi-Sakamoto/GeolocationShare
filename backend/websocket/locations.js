@@ -5,13 +5,12 @@ module.exports = (io) => {
   locations.on('connection', (socket) => {
     socket.on('upsert_location', async (data) => {
       const {
-        user_id, thread_id, longitude, latitude
+        user_id, longitude, latitude
       } = data;
 
       try {
         await Location.upsert({
           user_id,
-          thread_id,
           longitude,
           latitude
         });
@@ -24,7 +23,6 @@ module.exports = (io) => {
       locations.emit('upsert_location_client', {
         location: {
           user_id,
-          thread_id,
           longitude,
           latitude
         }

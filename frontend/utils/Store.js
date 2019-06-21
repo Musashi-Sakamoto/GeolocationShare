@@ -4,7 +4,6 @@ export const Store = React.createContext();
 
 const initialState = {
   comments: [],
-  threads: [],
   locations: []
 };
 
@@ -12,8 +11,6 @@ const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_COMMENTS':
       return { ...state, comments: action.payload.comments };
-    case 'FETCH_THREADS':
-      return { ...state, threads: action.payload.threads };
     case 'FETCH_LOCATIONS':
       return { ...state, locations: action.payload.locations };
     default:

@@ -3,13 +3,13 @@ const Comment = require('../models').comment;
 const User = require('../models').user;
 
 const list = async (req, res, next) => {
-  const { thread_id } = req.params;
+  const { to_user_id } = req.params;
   const { limit, offset } = req.query;
   let comments;
   try {
     comments = await Comment.findAll({
       where: {
-        thread_id
+        to_user_id
       },
       limit: Number(limit),
       offset: Number(offset),

@@ -31,7 +31,7 @@ const Thread = ({
       enqueueSnackbar('title or description should not be blank', { variant: 'error' });
       return;
     }
-    onSubmit(title, 1);
+    onSubmit(title, 4);
     setTitle('');
   };
 

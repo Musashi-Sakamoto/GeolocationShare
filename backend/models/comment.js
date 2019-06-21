@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   const comment = sequelize.define('comment', {
     comment: DataTypes.STRING,
     user_id: DataTypes.INTEGER,
-    thread_id: DataTypes.INTEGER
+    to_user_id: DataTypes.INTEGER
   }, {});
   comment.associate = function (models) {
     // associations can be defined here
@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       foreignKeyConstraint: true
     });
 
-    models.comment.belongsTo(models.thread, {
-      foreignKey: 'thread_id',
+    models.comment.belongsTo(models.user, {
+      foreignKey: 'to_user_id',
       targetKey: 'id',
       foreignKeyConstraint: true
     });

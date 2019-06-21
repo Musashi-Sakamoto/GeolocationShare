@@ -24,26 +24,26 @@ const Index = (props) => {
   const { state, dispatch } = useContext(Store);
   const comments = io('http://localhost:3000/comments', { query: `auth_token=${token}` });
   const locations = io('http://localhost:3000/locations', { query: `auth_token=${token}` });
-  const threads = io('http://localhost:3000/threads', { query: `auth_token=${token}` });
 
-  const postComment = (comment, thread_id) => {
+  const postComment = (comment, to_user_id) => {
     comments.emit('add_comment', {
-      comment, thread_id
+      comment, to_user_id
     });
   };
 
-  const threadJoin = (thread_id) => {
-    comments.emit('thread_join', { thread_id });
+  const threadJoin = (to_user_id) => {
+    console.log(`to_user_id: ${to_user_id}`);
+    comments.emit('thread_join', { to_user_id });
   };
 
-  const threadLeave = (thread_id) => {
-    comments.emit('thread_leave', { thread_id });
+  const threadLeave = (to_user_id) => {
+    comments.emit('thread_leave', { to_user_id });
   };
 
   useEffect(() => {
     comments.on('add_comment_client', (data) => {
       comments.emit('get_comments', {
-        thread_id: data.comment.thread_id
+        to_user_id: data.comment.to_user_id
       });
     });
     comments.on('get_comments_client', (data) => {
@@ -52,13 +52,8 @@ const Index = (props) => {
         payload: data
       });
     });
-    threads.emit('add_thread', { title: 'threaddddd', user_id: 4 });
-    threads.on('add_thread_client', (data) => {
-      console.log(data);
-    });
-    locations.emit('thread_join', { thread_id: 1 });
     locations.emit('upsert_location', {
-      user_id: 4, thread_id: 1, latitude: 35.689487, longitude: 139.691711
+      user_id: 4, latitude: 35.689487, longitude: 139.691711
     });
     locations.on('upsert_location_client', (data) => {
       console.log(data.location);
