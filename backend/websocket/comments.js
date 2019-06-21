@@ -36,6 +36,8 @@ module.exports = (io) => {
         socket.emit('get_comments_client_error', { error });
         return;
       }
+      console.log(retrievedComments);
+
       socket.emit('get_comments_client', { comments: retrievedComments });
     });
 
@@ -58,7 +60,7 @@ module.exports = (io) => {
       }
       console.log(`createdComment: ${createdComment.to_user_id}`);
 
-      comments.to(to_user_id).emit('add_comment_client', { comment: createdComment });
+      comments.to(createdComment.to_user_id).emit('add_comment_client', { comment: createdComment });
     });
   });
 };

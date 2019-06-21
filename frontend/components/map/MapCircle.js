@@ -19,12 +19,12 @@ const MapCircle = (props) => {
   const isMe = currentLocation.id === location.id;
 
   const onClickThread = () => {
-    threadJoin(4);
+    threadJoin(location.user.id);
     setThreadOpen(true);
   };
 
   const onCloseThread = () => {
-    threadLeave(4);
+    threadLeave(location.user.id);
     setThreadOpen(false);
   };
 

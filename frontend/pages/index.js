@@ -41,6 +41,17 @@ const Index = (props) => {
   };
 
   useEffect(() => {
+    comments.on('add_comment_client', (data) => {
+      comments.emit('get_comments', {
+        to_user_id: data.comment.to_user_id
+      });
+    });
+    comments.on('get_comments_client', (data) => {
+      dispatch({
+        type: 'FETCH_COMMENTS',
+        payload: data
+      });
+    });
     locations.emit('get_current_location');
     locations.on('get_current_location_client', (data) => {
       console.log(`current_location: ${data.current_location.user.id}`);
@@ -64,17 +75,6 @@ const Index = (props) => {
     locations.on('upsert_location_client', (data) => {
       locations.emit('get_current_location');
       locations.emit('get_locations');
-    });
-    comments.on('add_comment_client', (data) => {
-      comments.emit('get_comments', {
-        to_user_id: data.comment.to_user_id
-      });
-    });
-    comments.on('get_comments_client', (data) => {
-      dispatch({
-        type: 'FETCH_COMMENTS',
-        payload: data
-      });
     });
   }, []);
 
