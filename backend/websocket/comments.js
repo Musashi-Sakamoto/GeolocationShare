@@ -25,6 +25,7 @@ module.exports = (io) => {
           order: [
             ['createdAt', 'DESC']
           ],
+          limit: 10,
           include: [{
             model: User
           }]
