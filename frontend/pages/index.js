@@ -20,7 +20,10 @@ const styles = theme => ({
 
 
 const Index = (props) => {
-  const { token, classes } = props;
+  const {
+    token, classes
+  } = props;
+
   const { state, dispatch } = useContext(Store);
   const comments = io('http://localhost:3000/comments', { query: `auth_token=${token}` });
   const locations = io('http://localhost:3000/locations', { query: `auth_token=${token}` });
@@ -62,6 +65,18 @@ const Index = (props) => {
   };
 
   useEffect(() => {
+    navigator.geolocation.watchPosition((position) => {
+      locations.emit('upsert_location', {
+        latitude: position.coords.latitude, longitude: position.coords.longitude
+      });
+    });
+    navigator.geolocation.getCurrentPosition((position) => {
+      console.log(`position: ${JSON.stringify(position.coords.latitude)}`);
+      locations.emit('upsert_location', {
+        latitude: position.coords.latitude, longitude: position.coords.longitude
+      });
+    });
+
     locations.emit('get_current_location');
     locations.on('get_current_location_client', (data) => {
       console.log(`current_location: ${data.current_location.user.id}`);
@@ -78,9 +93,6 @@ const Index = (props) => {
         type: 'FETCH_LOCATIONS',
         payload: data
       });
-    });
-    locations.emit('upsert_location', {
-      latitude: 35.689487, longitude: 139.691711
     });
     locations.on('upsert_location_client', (data) => {
       locations.emit('get_current_location');

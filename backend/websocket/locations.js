@@ -5,6 +5,8 @@ module.exports = (io) => {
   const locations = io.of('/locations');
   locations.on('connection', (socket) => {
     socket.on('get_current_location', async () => {
+      console.log('backend current location');
+
       let currentLocation;
       try {
         currentLocation = await Location.findOne({
@@ -20,6 +22,8 @@ module.exports = (io) => {
         socket.emit('get_current_location_client_error', { error });
         return;
       }
+      console.log(`currentLo:${socket.request.user.id}`);
+
       socket.emit('get_current_location_client', {
         current_location: currentLocation
       });

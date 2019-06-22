@@ -31,6 +31,8 @@ const MapCircle = (props) => {
   const map = useGoogleMap();
 
   useEffect(() => {
+    console.log(map);
+
     if (map) {
       map.panTo({
         lat: currentLocation.latitude,
