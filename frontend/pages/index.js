@@ -9,6 +9,9 @@ import { Store } from '../utils/Store';
 import Map from '../components/map/Map';
 import Navbar from '../components/Navbar';
 
+import LocationsSocketAPI from '../utils/sockets/locations';
+import CommentSocketAPI from '../utils/sockets/comments';
+
 const styles = theme => ({
   root: {
     position: 'relative'
@@ -25,8 +28,8 @@ const Index = (props) => {
   } = props;
 
   const { state, dispatch } = useContext(Store);
-  const comments = useRef(io('http://localhost:3000/comments', { query: `auth_token=${token}` }));
-  const locations = useRef(io('http://localhost:3000/locations', { query: `auth_token=${token}` }));
+  const comments = useRef(CommentSocketAPI(token, dispatch));
+  const locations = useRef(LocationsSocketAPI(token, dispatch));
 
   const postComment = (comment, to_user_id) => {
     comments.current.emit('add_comment', {
@@ -53,45 +56,9 @@ const Index = (props) => {
         latitude: position.coords.latitude, longitude: position.coords.longitude
       });
     });
-    navigator.geolocation.getCurrentPosition((position) => {
-      console.log(`position: ${JSON.stringify(position.coords.latitude)}`);
-      locations.current.emit('upsert_location', {
-        latitude: position.coords.latitude, longitude: position.coords.longitude
-      });
-    });
 
-    comments.current.on('add_comment_client', (data) => {
-      comments.current.emit('get_comments', {
-        to_user_id: data.comment.to_user_id
-      });
-    });
-    comments.current.on('get_comments_client', (data) => {
-      dispatch({
-        type: 'FETCH_COMMENTS',
-        payload: data
-      });
-    });
     locations.current.emit('get_current_location');
-    locations.current.on('get_current_location_client', (data) => {
-      console.log(`current_location: ${data.current_location.user.id}`);
-      dispatch({
-        type: 'FETCH_CURRENT_LOCATION',
-        payload: data
-      });
-    });
     locations.current.emit('get_locations');
-    locations.current.on('get_locations_client', (data) => {
-      console.log(`locations: ${data.locations}`);
-
-      dispatch({
-        type: 'FETCH_LOCATIONS',
-        payload: data
-      });
-    });
-    locations.current.on('upsert_location_client', (data) => {
-      locations.current.emit('get_current_location');
-      locations.current.emit('get_locations');
-    });
     return () => {
       locations.current.close();
       comments.current.close();
