@@ -65,7 +65,7 @@ const Index = (props) => {
   };
 
   useEffect(() => {
-    navigator.geolocation.watchPosition((position) => {
+    const watchId = navigator.geolocation.watchPosition((position) => {
       locations.emit('upsert_location', {
         latitude: position.coords.latitude, longitude: position.coords.longitude
       });
@@ -98,6 +98,11 @@ const Index = (props) => {
       locations.emit('get_current_location');
       locations.emit('get_locations');
     });
+    return () => {
+      locations.close();
+      comments.close();
+      navigator.geolocation.clearWatch(watchId);
+    };
   }, []);
 
   return (
