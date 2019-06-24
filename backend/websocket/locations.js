@@ -4,7 +4,7 @@ const User = require('../models').user;
 module.exports = (io) => {
   const locations = io.of('/locations');
   locations.on('connection', (socket) => {
-    socket.on('get_current_location', async () => {
+    socket.on('get_current_location', async (callback) => {
       console.log('backend current location');
 
       let currentLocation;
@@ -19,7 +19,7 @@ module.exports = (io) => {
         });
       }
       catch (error) {
-        socket.emit('get_current_location_client_error', { error });
+        callback({ error });
         return;
       }
       console.log(`currentLo:${socket.request.user.id}`);
@@ -27,9 +27,10 @@ module.exports = (io) => {
       socket.emit('get_current_location_client', {
         current_location: currentLocation
       });
+      callback({ current_location: currentLocation });
     });
 
-    socket.on('get_locations', async () => {
+    socket.on('get_locations', async (callback) => {
       let retrievedLocations;
       try {
         retrievedLocations = await Location.findAll({
@@ -39,15 +40,16 @@ module.exports = (io) => {
         });
       }
       catch (error) {
-        socket.emit('get_locations_client_error', { error });
+        callback({ error });
         return;
       }
       socket.emit('get_locations_client', {
         locations: retrievedLocations
       });
+      callback({ locations: retrievedLocations });
     });
 
-    socket.on('upsert_location', async (data) => {
+    socket.on('upsert_location', async (data, callback) => {
       const {
         longitude, latitude
       } = data;
@@ -61,10 +63,17 @@ module.exports = (io) => {
       }
       catch (error) {
         console.log(error);
-        locations.emit('upsert_location_client_error', { error });
+        callback({ error });
         return;
       }
       locations.emit('upsert_location_client', {
+        location: {
+          user_id: socket.request.user.id,
+          longitude,
+          latitude
+        }
+      });
+      callback({
         location: {
           user_id: socket.request.user.id,
           longitude,
