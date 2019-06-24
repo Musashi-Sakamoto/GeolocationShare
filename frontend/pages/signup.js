@@ -6,11 +6,11 @@ import Form from '../components/Form';
 import Navbar from '../components/Navbar';
 
 const SignupForm = (props) => {
-  const onSignupClicked = async (email, name, password) => {
+  const onSignupClicked = async (email, username, password) => {
     let res;
     try {
       res = await axios.post(`${process.env.API_HOST}/users`, {
-        name,
+        username,
         password,
         email
       });
