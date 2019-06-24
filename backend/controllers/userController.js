@@ -50,6 +50,9 @@ const create = async (req, res, next) => {
     });
   }
   catch (error) {
+    console.log('====================================');
+    console.log(error);
+    console.log('====================================');
     return next(new createError.InternalServerError('DB Error [users create 2]'));
   }
 
