@@ -7,15 +7,16 @@ module.exports = (io) => {
     socket.on('thread_join', (data, callback) => {
       console.log('join');
       socket.join(data.to_user_id);
-      callback();
+      callback(data.to_user_id);
     });
 
-    socket.on('thread_leave', (data) => {
+    socket.on('thread_leave', (data, callback) => {
       console.log('leave');
       socket.leave(data.to_user_id);
+      callback(data.to_user_id);
     });
 
-    socket.on('get_comments', async (data) => {
+    socket.on('get_comments', async (data, callback) => {
       const { to_user_id } = data;
 
       let retrievedComments;
@@ -41,10 +42,11 @@ module.exports = (io) => {
       console.log(retrievedComments);
 
       socket.emit('get_comments_client', { comments: retrievedComments });
+      callback({ comments: retrievedComments });
     });
 
 
-    socket.on('add_comment', async (data) => {
+    socket.on('add_comment', async (data, callback) => {
       console.log(`login user id: ${socket.request.user.id}`);
 
       const { to_user_id, comment } = data;
@@ -65,6 +67,7 @@ module.exports = (io) => {
       console.log(`createdComment: ${createdComment.to_user_id}`);
 
       comments.to(createdComment.to_user_id).emit('add_comment_client', { comment: createdComment });
+      callback({ comment: createdComment });
     });
   });
 };
