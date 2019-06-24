@@ -36,7 +36,7 @@ module.exports = (io) => {
       }
       catch (error) {
         console.log(error);
-        socket.emit('get_comments_client_error', { error });
+        callback({ error });
         return;
       }
       console.log(retrievedComments);
@@ -61,7 +61,7 @@ module.exports = (io) => {
       }
       catch (error) {
         console.log(error);
-        comments.to(to_user_id).emit('add_comment_client_error', { error });
+        callback({ error });
         return;
       }
       console.log(`createdComment: ${createdComment.to_user_id}`);

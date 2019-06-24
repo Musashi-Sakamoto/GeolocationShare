@@ -54,6 +54,7 @@ describe('comments', () => {
   test('SUCCESS get_comments', (done) => {
     comments.emit('get_comments', { to_user_id: loggedinUser.id }, (data) => {
       expect(data.comments.length).toBeGreaterThanOrEqual(0);
+      expect(data.error).toBeUndefined();
       done();
     });
   });
@@ -62,6 +63,21 @@ describe('comments', () => {
     const createdComment = 'Comment Created!';
     comments.emit('add_comment', { comment: createdComment, to_user_id: loggedinUser.id }, (data) => {
       expect(data.comment.comment).toBe(createdComment);
+      expect(data.error).toBeUndefined();
+      done();
+    });
+  });
+
+  test('ERROR get_comments', (done) => {
+    comments.emit('get_comments', {}, (data) => {
+      expect(data.error).toBeDefined();
+      done();
+    });
+  });
+
+  test('ERROR add_comment', (done) => {
+    comments.emit('add_comment', {}, (data) => {
+      expect(data.error).toBeDefined();
       done();
     });
   });
