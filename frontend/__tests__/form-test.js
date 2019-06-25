@@ -61,4 +61,50 @@ describe('ログイン・サインアップフォーム', () => {
     expect(onSubmit).not.toHaveBeenCalled();
     expect(enqueueSnackbar).toHaveBeenCalled();
   });
+
+  it('サインアップにおいてテキストを入力するとボタンをクリックした時にコールバック呼び出しされる', () => {
+    const onSubmit = jest.fn();
+    const wrapper = mount(<Form isLogin={false} onSubmit={onSubmit} />);
+    wrapper.find(TextField).first().find('input').simulate('change', {
+      target: {
+        value: 'email@email.com'
+      }
+    });
+    wrapper.find(TextField).at(1).find('input').simulate('change', {
+      target: {
+        value: 'username'
+      }
+    });
+    wrapper.find(TextField).at(2).find('input').simulate('change', {
+      target: {
+        value: 'password'
+      }
+    });
+    wrapper.find(Button).simulate('click');
+    expect(onSubmit).toHaveBeenCalled();
+  });
+
+  it('サインアップにおいてテキストを入力しないと関数が呼び出されない', () => {
+    const onSubmit = jest.fn();
+    const enqueueSnackbar = jest.fn();
+    const wrapper = mount(<Form isLogin={false} onSubmit={onSubmit} enqueueSnackbar={enqueueSnackbar} />);
+    wrapper.find(TextField).first().find('input').simulate('change', {
+      target: {
+        value: ''
+      }
+    });
+    wrapper.find(TextField).at(1).find('input').simulate('change', {
+      target: {
+        value: ''
+      }
+    });
+    wrapper.find(TextField).at(2).find('input').simulate('change', {
+      target: {
+        value: 'password'
+      }
+    });
+    wrapper.find(Button).simulate('click');
+    expect(onSubmit).not.toHaveBeenCalled();
+    expect(enqueueSnackbar).toHaveBeenCalled();
+  });
 });
