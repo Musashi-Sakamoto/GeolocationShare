@@ -21,8 +21,8 @@ const LocationsSocketAPI = (token, dispatch) => {
   });
 
   locations.on('upsert_location_client', (data) => {
-    locations.emit('get_current_location');
-    locations.emit('get_locations');
+    locations.emit('get_current_location', (data2) => {});
+    locations.emit('get_locations', (data2) => {});
   });
 
   return locations;

@@ -34,7 +34,7 @@ const Index = (props) => {
   const postComment = (comment, to_user_id) => {
     comments.current.emit('add_comment', {
       comment, to_user_id
-    });
+    }, () => {});
   };
 
   const threadJoin = (to_user_id) => {
@@ -42,23 +42,27 @@ const Index = (props) => {
     comments.current.emit('thread_join', { to_user_id }, () => {
       comments.current.emit('get_comments', {
         to_user_id
+      }, (data) => {
+        console.log(`get_comments comments: ${data.comments}`);
       });
     });
   };
 
   const threadLeave = (to_user_id) => {
-    comments.current.emit('thread_leave', { to_user_id });
+    comments.current.emit('thread_leave', { to_user_id }, (data) => {
+      console.log(`thread_leave to_user_id: ${to_user_id}`);
+    });
   };
 
   useEffect(() => {
     const watchId = navigator.geolocation.watchPosition((position) => {
       locations.current.emit('upsert_location', {
         latitude: position.coords.latitude, longitude: position.coords.longitude
-      });
+      }, (data) => {});
     });
 
-    locations.current.emit('get_current_location');
-    locations.current.emit('get_locations');
+    locations.current.emit('get_current_location', (data) => {});
+    locations.current.emit('get_locations', (data) => {});
     return () => {
       locations.current.close();
       comments.current.close();
