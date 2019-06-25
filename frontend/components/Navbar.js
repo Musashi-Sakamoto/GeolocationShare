@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import cookie from 'js-cookie';
-import Router from 'next/router';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -20,28 +17,8 @@ const styles = {
 
 const Navbar = (props) => {
   const {
-    classes, isLogin, isLoggedIn, token
+    classes, isLogin, isLoggedIn, onLogoutClick
   } = props;
-
-  const [err, setError] = useState('');
-
-  const onLogoutClicked = async () => {
-    cookie.remove('token');
-    Router.push('/login');
-    try {
-      await axios.get(`${process.env.API_HOST}/logout`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-    }
-    catch (error) {
-      setError(error.response.data.error.message);
-      return;
-    }
-
-    setError('');
-  };
 
   return (
     <div className={classes.root}>
@@ -56,7 +33,7 @@ const Navbar = (props) => {
                     {isLogin ? 'Signup' : 'Login'}
                 </Button>
             </Link>) : (
-            <Button color="inherit" onClick={onLogoutClicked}>
+            <Button color="inherit" onClick={onLogoutClick}>
                 Logout
             </Button>)}
         </Toolbar>
