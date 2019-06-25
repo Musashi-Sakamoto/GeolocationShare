@@ -1,14 +1,16 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
+import withWidth from '@material-ui/core/withWidth';
 import {
-  List, ListItem, ListItemText, TextField, Divider, Typography
+  TextField
 } from '@material-ui/core';
+
+import CommentList from './CommentList';
 
 const styles = theme => ({
   paper: {
@@ -46,23 +48,7 @@ const Thread = ({
             >
             <DialogTitle id="form-dialog-title">{location.user.username}</DialogTitle>
             <DialogContent>
-                <List >
-                    {comments.map((data, i) => (
-                        <Fragment key={i}>
-                            <ListItem>
-                                <ListItemText primary={data.comment} secondary={
-                                    <Fragment>
-                                        <Typography component="span" variant="body2" color="textPrimary">
-                                            {data.user.username}
-                                        </Typography>
-                                        {' '}{data.createdAt}
-                                    </Fragment>
-                                }/>
-                            </ListItem>
-                            <Divider variant="fullWidth" component="li" />
-                        </Fragment>
-                    ))}
-                </List>
+                <CommentList comments={comments} />
             </DialogContent>
             <DialogActions>
             <TextField
