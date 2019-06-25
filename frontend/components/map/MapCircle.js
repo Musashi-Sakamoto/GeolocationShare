@@ -13,7 +13,7 @@ const MapCircle = (props) => {
   const [isThreadOpen, setThreadOpen] = useState(false);
 
   const {
-    classes, postComment, threadJoin, threadLeave, comments, location, currentLocation
+    classes, postComment, threadJoin, threadLeave, comments, location, currentLocation, enqueueSnackbar
   } = props;
 
   const isMe = currentLocation.id === location.id;
@@ -43,7 +43,7 @@ const MapCircle = (props) => {
 
   return (
     <Fragment>
-      <Thread isOpen={isThreadOpen} onClose={onCloseThread} onSubmit={postComment} comments={comments} location={location} />
+      <Thread isOpen={isThreadOpen} onClose={onCloseThread} onSubmit={postComment} comments={comments} location={location} enqueueSnackbar={enqueueSnackbar} />
       <InfoWindow
       onLoad={(infoWindow) => {
         console.log('infoWindow: ', infoWindow);

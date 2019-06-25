@@ -24,7 +24,7 @@ const styles = theme => ({
 
 const Index = (props) => {
   const {
-    token, classes
+    token, classes, enqueueSnackbar
   } = props;
 
   const { state, dispatch } = useContext(Store);
@@ -74,7 +74,7 @@ const Index = (props) => {
     <div className={classes.root}>
       <Navbar isLoggedIn token={token} />
       <div className={classes.container}>
-        <Map postComment={postComment} threadJoin={threadJoin} threadLeave={threadLeave} comments={state.comments} locations={state.locations} currentLocation={state.currentLocation}/>
+        <Map postComment={postComment} threadJoin={threadJoin} threadLeave={threadLeave} comments={state.comments} locations={state.locations} currentLocation={state.currentLocation} enqueueSnackbar={enqueueSnackbar} />
       </div>
     </div>
   );
