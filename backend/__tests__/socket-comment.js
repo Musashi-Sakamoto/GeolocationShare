@@ -55,6 +55,9 @@ describe('comments', () => {
     comments.emit('get_comments', { to_user_id: loggedinUser.id }, (data) => {
       expect(data.comments.length).toBeGreaterThanOrEqual(0);
       expect(data.error).toBeUndefined();
+    });
+    comments.on('get_comments_client', (data) => {
+      expect(data.comments.length).toBeGreaterThanOrEqual(0);
       done();
     });
   });
@@ -64,6 +67,9 @@ describe('comments', () => {
     comments.emit('add_comment', { comment: createdComment, to_user_id: loggedinUser.id }, (data) => {
       expect(data.comment.comment).toBe(createdComment);
       expect(data.error).toBeUndefined();
+    });
+    comments.on('add_comment_client', (data) => {
+      expect(data.comment).toBeDefined();
       done();
     });
   });
