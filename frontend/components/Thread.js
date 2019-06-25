@@ -21,7 +21,7 @@ const styles = theme => ({
 });
 
 const Thread = ({
-  classes, onSubmit, isOpen, onClose, enqueueSnackbar, comments, location
+  classes, isOpen, onClose, enqueueSnackbar, comments, location, postComment
 }) => {
   const [title, setTitle] = useState('');
 
@@ -30,7 +30,7 @@ const Thread = ({
       enqueueSnackbar('title or description should not be blank', { variant: 'error' });
       return;
     }
-    onSubmit(title, location.user.id);
+    postComment(title, location.user.id);
     setTitle('');
   };
 

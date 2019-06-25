@@ -13,7 +13,7 @@ const styles = () => ({
 
 const Map = (props) => {
   const {
-    classes, postComment, threadJoin, threadLeave, comments, locations, currentLocation, enqueueSnackbar
+    classes, locations, currentLocation
   } = props;
 
   return (
@@ -35,7 +35,7 @@ const Map = (props) => {
               lng: currentLocation.longitude
             }}>
               {locations.map((location, i) => (
-                <MapCircle key={i} currentLocation={currentLocation} postComment={postComment} threadJoin={threadJoin} threadLeave={threadLeave} comments={comments} location={location} enqueueSnackbar={enqueueSnackbar} />
+                <MapCircle key={i} location={location} {...props} />
               ))}
         </GoogleMap>
     </LoadScriptNext>
