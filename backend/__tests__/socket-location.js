@@ -48,6 +48,9 @@ describe('locations', () => {
     locations.emit('get_locations', (data) => {
       expect(data.locations.length).toBeGreaterThanOrEqual(0);
       expect(data.error).toBeUndefined();
+    });
+    locations.on('get_locations_client', (data) => {
+      expect(data.locations).toBeDefined();
       done();
     });
   });
@@ -56,6 +59,9 @@ describe('locations', () => {
     locations.emit('get_current_location', (data) => {
       expect(data.current_location).toBeDefined();
       expect(data.error).toBeUndefined();
+    });
+    locations.on('get_current_location_client', (data) => {
+      expect(data.current_location).toBeDefined();
       done();
     });
   });
@@ -64,6 +70,8 @@ describe('locations', () => {
     locations.emit('upsert_location', { latitude: 35.689483, longitude: 139.691709 }, (data) => {
       expect(data.location).toBeDefined();
       expect(data.error).toBeUndefined();
+    });
+    locations.on('upsert_location_client', (data) => {
       done();
     });
   });
