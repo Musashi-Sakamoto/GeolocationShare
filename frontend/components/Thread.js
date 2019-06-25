@@ -37,39 +37,37 @@ const Thread = ({
   };
 
   return (
-    <div>
-        <Dialog
+    <Dialog
+        classes={{
+          paper: classes.paper
+        }}
+        open={isOpen}
+        onClose={onClose}
+        aria-labelledby="form-dialog-title"
+        >
+        <DialogTitle id="form-dialog-title">{location.user.username}</DialogTitle>
+        <DialogContent>
+            <CommentList comments={comments} />
+        </DialogContent>
+        <DialogActions>
+        <TextField
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            autoFocus
+            margin="dense"
+            id="title"
+            label="title"
+            type="text"
+            fullWidth
             classes={{
-              paper: classes.paper
+              root: classes.textField
             }}
-            open={isOpen}
-            onClose={onClose}
-            aria-labelledby="form-dialog-title"
-            >
-            <DialogTitle id="form-dialog-title">{location.user.username}</DialogTitle>
-            <DialogContent>
-                <CommentList comments={comments} />
-            </DialogContent>
-            <DialogActions>
-            <TextField
-                value={title}
-                onChange={e => setTitle(e.target.value)}
-                autoFocus
-                margin="dense"
-                id="title"
-                label="title"
-                type="text"
-                fullWidth
-                classes={{
-                  root: classes.textField
-                }}
-                />
-                <Button onClick={onSubmitClicked} color="primary">
-                    Submit
-                </Button>
-          </DialogActions>
-        </Dialog>
-    </div>
+            />
+            <Button onClick={onSubmitClicked} color="primary">
+                Submit
+            </Button>
+        </DialogActions>
+    </Dialog>
   );
 };
 
