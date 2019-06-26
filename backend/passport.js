@@ -24,7 +24,7 @@ passport.use(new LocalStrategy({
     return done(new createError.InternalServerError('DB Error'));
   }
   if (!user) {
-    return done(null, false, { message: 'Incorect username.' });
+    return done(null, false, { message: 'Incorrect username.' });
   }
   const isValid = await bcrypt.compare(password, user.password);
   if (!isValid) {
