@@ -41,7 +41,7 @@ const Thread = ({
           paper: classes.paper
         }}
         open={isOpen}
-        onClose={onClose}
+        onClose={onClose(location.user.id)}
         aria-labelledby="form-dialog-title"
         >
         <DialogTitle id="form-dialog-title">{location.user.username}</DialogTitle>
