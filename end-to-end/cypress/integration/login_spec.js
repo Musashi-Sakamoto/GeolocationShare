@@ -33,4 +33,12 @@ describe('ログインページ', () => {
         cy.contains('Login').click()
         cy.contains('Incorrect password')
     })
+
+    it('ログイン成功', () => {
+        cy.get(`input[name='username']`).clear().type('username1')
+        cy.get(`input[name='password']`).clear().type('password')
+        cy.contains('Login').click()
+        cy.wait(500)
+        cy.url().should('eq', 'http://localhost:8000/')
+    })
 })
