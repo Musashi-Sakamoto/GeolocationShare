@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useRef } from 'react';
 import Router from 'next/router';
-import io from 'socket.io-client';
+import axios from 'axios';
+import cookie from 'js-cookie';
 import cookies from 'next-cookies';
 import { withSnackbar } from 'notistack';
 import { withStyles } from '@material-ui/core/styles';
@@ -24,7 +25,7 @@ const styles = theme => ({
 
 const Index = (props) => {
   const {
-    token, classes
+    token, classes, enqueueSnackbar
   } = props;
 
   const { state, dispatch } = useContext(Store);
@@ -35,6 +36,21 @@ const Index = (props) => {
     comments.current.emit('add_comment', {
       comment, to_user_id
     }, () => {});
+  };
+
+  const onLogoutClicked = async () => {
+    cookie.remove('token');
+    Router.push('/login');
+    try {
+      await axios.get(`${process.env.API_HOST}/logout`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+    }
+    catch (error) {
+      enqueueSnackbar(error.response.data.error.message);
+    }
   };
 
   const threadJoin = (to_user_id) => {
@@ -72,9 +88,9 @@ const Index = (props) => {
 
   return (
     <div className={classes.root}>
-      <Navbar isLoggedIn token={token} />
+      <Navbar isLoggedIn token={token} onLogoutClick={onLogoutClicked} />
       <div className={classes.container}>
-        <Map postComment={postComment} threadJoin={threadJoin} threadLeave={threadLeave} comments={state.comments} locations={state.locations} currentLocation={state.currentLocation}/>
+        <Map postComment={postComment} threadJoin={threadJoin} threadLeave={threadLeave} comments={state.comments} locations={state.locations} currentLocation={state.currentLocation} enqueueSnackbar={enqueueSnackbar} />
       </div>
     </div>
   );

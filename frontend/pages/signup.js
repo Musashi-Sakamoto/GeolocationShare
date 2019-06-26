@@ -30,7 +30,7 @@ const SignupForm = (props) => {
   return (
     <React.Fragment>
       <Navbar isLogin={false} />
-      <Form onSubmit={onSignupClicked} isLogin={false} />
+      <Form onSubmit={onSignupClicked} isLogin={false} enqueueSnackbar={props.enqueueSnackbar} />
     </React.Fragment>
   );
 };

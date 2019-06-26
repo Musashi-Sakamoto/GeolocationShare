@@ -36,7 +36,7 @@ const LoginForm = (props) => {
   return (
     <React.Fragment>
       <Navbar isLogin />
-      <Form onSubmit={onLoginClicked} isLogin />
+      <Form onSubmit={onLoginClicked} isLogin enqueueSnackbar={props.enqueueSnackbar} />
     </React.Fragment>
   );
 };

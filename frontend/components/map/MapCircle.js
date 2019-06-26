@@ -1,38 +1,16 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import React, { Fragment, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
-import { Circle, InfoWindow, useGoogleMap } from '@react-google-maps/api';
-
-import Thread from '../Thread';
-
-const styles = () => ({
-
-});
+import { Circle, InfoWindow } from '@react-google-maps/api';
 
 const MapCircle = (props) => {
-  const [isThreadOpen, setThreadOpen] = useState(false);
-
   const {
-    classes, postComment, threadJoin, threadLeave, comments, location, currentLocation
+    location, currentLocation, onClickThread, useGoogleMap
   } = props;
 
   const isMe = currentLocation.id === location.id;
-
-  const onClickThread = () => {
-    threadJoin(location.user.id);
-    setThreadOpen(true);
-  };
-
-  const onCloseThread = () => {
-    threadLeave(location.user.id);
-    setThreadOpen(false);
-  };
-
   const map = useGoogleMap();
 
   useEffect(() => {
-    console.log(map);
-
     if (map) {
       map.panTo({
         lat: currentLocation.latitude,
@@ -43,14 +21,13 @@ const MapCircle = (props) => {
 
   return (
     <Fragment>
-      <Thread isOpen={isThreadOpen} onClose={onCloseThread} onSubmit={postComment} comments={comments} location={location} />
       <InfoWindow
       onLoad={(infoWindow) => {
         console.log('infoWindow: ', infoWindow);
       }}
       position={{ lat: location.latitude, lng: location.longitude }}
     >
-      <Button color={isMe ? 'primary' : 'secondary'} variant={isMe ? 'contained' : 'outlined'} onClick={onClickThread}>
+      <Button color={isMe ? 'primary' : 'secondary'} variant={isMe ? 'contained' : 'outlined'} onClick={onClickThread(location.user.id)}>
         {location.user.username}
       </Button>
     </InfoWindow>
@@ -77,4 +54,4 @@ const MapCircle = (props) => {
   );
 };
 
-export default withStyles(styles)(MapCircle);
+export default MapCircle;

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { withSnackbar } from 'notistack';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -83,4 +82,4 @@ const Form = ({
   );
 };
 
-export default withSnackbar(withStyles(styles)(Form));
+export default withStyles(styles)(Form);

@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useState, Fragment } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { GoogleMap, LoadScriptNext } from '@react-google-maps/api';
+import _ from 'lodash';
+import { GoogleMap, LoadScriptNext, useGoogleMap } from '@react-google-maps/api';
 
 import MapCircle from './MapCircle';
+import Thread from '../Thread';
 
 const styles = () => ({
   map: {
@@ -13,8 +15,23 @@ const styles = () => ({
 
 const Map = (props) => {
   const {
-    classes, postComment, threadJoin, threadLeave, comments, locations, currentLocation
+    classes, locations, currentLocation, threadJoin, threadLeave
   } = props;
+
+  const [isThreadOpen, setThreadOpen] = useState(false);
+  const [chosenLocation, setChosenLocation] = useState(null);
+
+  const onClickThread = user_id => () => {
+    threadJoin(user_id);
+    setChosenLocation(_.find(locations, ['user_id', user_id]));
+    setThreadOpen(true);
+  };
+
+  const onCloseThread = user_id => () => {
+    threadLeave(user_id);
+    setChosenLocation(null);
+    setThreadOpen(false);
+  };
 
   return (
     <LoadScriptNext
@@ -34,9 +51,10 @@ const Map = (props) => {
               lat: currentLocation.latitude,
               lng: currentLocation.longitude
             }}>
-              {locations.map((location, i) => (
-                <MapCircle key={i} currentLocation={currentLocation} postComment={postComment} threadJoin={threadJoin} threadLeave={threadLeave} comments={comments} location={location} />
-              ))}
+            {isThreadOpen && (<Thread isOpen={isThreadOpen} onClose={onCloseThread} location={chosenLocation} {...props} />)}
+            {locations.map((location, i) => (
+              <MapCircle useGoogleMap={useGoogleMap} key={i} location={location} onClickThread={onClickThread} isThreadOpen={isThreadOpen} {...props} />
+            ))}
         </GoogleMap>
     </LoadScriptNext>
 
