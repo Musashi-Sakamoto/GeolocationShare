@@ -1,19 +1,16 @@
 import React, { Fragment, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
-import { Circle, InfoWindow, useGoogleMap } from '@react-google-maps/api';
+import { Circle, InfoWindow } from '@react-google-maps/api';
 
 const MapCircle = (props) => {
   const {
-    location, currentLocation, onClickThread
+    location, currentLocation, onClickThread, useGoogleMap
   } = props;
 
   const isMe = currentLocation.id === location.id;
-
   const map = useGoogleMap();
 
   useEffect(() => {
-    console.log(map);
-
     if (map) {
       map.panTo({
         lat: currentLocation.latitude,

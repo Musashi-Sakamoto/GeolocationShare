@@ -1,7 +1,7 @@
 import React, { useState, Fragment } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import _ from 'lodash';
-import { GoogleMap, LoadScriptNext } from '@react-google-maps/api';
+import { GoogleMap, LoadScriptNext, useGoogleMap } from '@react-google-maps/api';
 
 import MapCircle from './MapCircle';
 import Thread from '../Thread';
@@ -53,7 +53,7 @@ const Map = (props) => {
             }}>
             {isThreadOpen && (<Thread isOpen={isThreadOpen} onClose={onCloseThread} location={chosenLocation} {...props} />)}
             {locations.map((location, i) => (
-              <MapCircle key={i} location={location} onClickThread={onClickThread} isThreadOpen={isThreadOpen} {...props} />
+              <MapCircle useGoogleMap={useGoogleMap} key={i} location={location} onClickThread={onClickThread} isThreadOpen={isThreadOpen} {...props} />
             ))}
         </GoogleMap>
     </LoadScriptNext>
