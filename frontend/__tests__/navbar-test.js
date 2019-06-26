@@ -1,5 +1,5 @@
 import React from 'react';
-import { createShallow, createMount } from '@material-ui/core/test-utils';
+import { createShallow } from '@material-ui/core/test-utils';
 import { Button } from '@material-ui/core';
 import Router from 'next/router';
 import Navbar from '../components/Navbar';
@@ -9,33 +9,31 @@ Router.router = mockedRouter;
 
 describe('ナビバー', () => {
   let shallow;
-  let mount;
   beforeEach(() => {
     shallow = createShallow();
-    mount = createMount();
   });
 
   it('ログイン画面表示', () => {
-    const wrapper = mount(<Navbar isLogin />);
+    const wrapper = shallow(<Navbar isLogin />).dive();
 
     expect(wrapper.find(Button).text()).toBe('Signup');
   });
 
   it('サインアップ画面表示', () => {
-    const wrapper = mount(<Navbar isLogin={false} />);
+    const wrapper = shallow(<Navbar isLogin={false} />).dive();
 
     expect(wrapper.find(Button).text()).toBe('Login');
   });
 
   it('ログイン後画面表示', () => {
-    const wrapper = mount(<Navbar isLoggedIn />);
+    const wrapper = shallow(<Navbar isLoggedIn />).dive();
 
     expect(wrapper.find(Button).text()).toBe('Logout');
   });
 
   it('ログイン後画面表示', () => {
     const onLogoutClicked = jest.fn();
-    const wrapper = mount(<Navbar isLoggedIn onLogoutClick={onLogoutClicked} />);
+    const wrapper = shallow(<Navbar isLoggedIn onLogoutClick={onLogoutClicked} />).dive();
 
     expect(wrapper.find(Button).text()).toBe('Logout');
     wrapper.find(Button).simulate('click');

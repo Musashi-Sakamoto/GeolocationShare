@@ -1,19 +1,14 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { Circle, InfoWindow, useGoogleMap } from '@react-google-maps/api';
 
 import Thread from '../Thread';
 
-const styles = () => ({
-
-});
-
 const MapCircle = (props) => {
   const [isThreadOpen, setThreadOpen] = useState(false);
 
   const {
-    classes, threadJoin, threadLeave, location, currentLocation
+    threadJoin, threadLeave, location, currentLocation
   } = props;
 
   const isMe = currentLocation.id === location.id;
@@ -77,4 +72,4 @@ const MapCircle = (props) => {
   );
 };
 
-export default withStyles(styles)(MapCircle);
+export default MapCircle;
