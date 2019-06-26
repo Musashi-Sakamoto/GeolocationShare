@@ -5,7 +5,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import withWidth from '@material-ui/core/withWidth';
 import {
   TextField
 } from '@material-ui/core';
@@ -71,4 +70,4 @@ const Thread = ({
   );
 };
 
-export default withStyles(styles)(withWidth()(Thread));
+export default withStyles(styles)(Thread);

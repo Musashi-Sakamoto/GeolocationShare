@@ -4,107 +4,49 @@ import { TextField, Button } from '@material-ui/core';
 
 import Thread from '../components/Thread';
 
-describe('ログイン・サインアップフォーム', () => {
+describe('スレッド', () => {
   let shallow;
-  let mount;
   beforeEach(() => {
     shallow = createShallow();
-    mount = createMount();
   });
 
-  it('ログイン画面表示', () => {
-    const wrapper = mount(<Form isLogin />);
+  it('テキストフィールドに何か埋めた状態でSubmitをクリックするとpostCommentが呼び出される', () => {
+    const props = {
+      isOpen: true,
+      onClose: jest.fn(),
+      comments: [],
+      location: { user: { username: 'username' } },
+      postComment: jest.fn()
+    };
+    const wrapper = shallow(<Thread {...props} />).dive();
 
-    expect(wrapper.find(TextField).length).toBe(2);
-    expect(wrapper.find(Button).text()).toBe('Login');
-  });
-
-  it('サインアップ画面表示', () => {
-    const wrapper = mount(<Form isLogin={false} />);
-
-    expect(wrapper.find(TextField).length).toBe(3);
-    expect(wrapper.find(Button).text()).toBe('Signup');
-  });
-
-  it('ログインにおいてテキストを入力するとボタンをクリックした時にコールバック呼び出しされる', () => {
-    const onSubmit = jest.fn();
-    const wrapper = mount(<Form isLogin onSubmit={onSubmit} />);
-    wrapper.find(TextField).first().find('input').simulate('change', {
+    wrapper.find(TextField).simulate('change', {
       target: {
-        value: 'username'
-      }
-    });
-    wrapper.find(TextField).at(1).find('input').simulate('change', {
-      target: {
-        value: 'password'
+        value: 'title'
       }
     });
     wrapper.find(Button).simulate('click');
-    expect(onSubmit).toHaveBeenCalled();
+    expect(props.postComment).toHaveBeenCalled();
   });
 
-  it('ログインにおいてテキストを入力しないと関数が呼び出されない', () => {
-    const onSubmit = jest.fn();
-    const enqueueSnackbar = jest.fn();
-    const wrapper = mount(<Form isLogin onSubmit={onSubmit} enqueueSnackbar={enqueueSnackbar} />);
-    wrapper.find(TextField).first().find('input').simulate('change', {
+  it('テキストフィールドに何も状態でSubmitをクリックしてもpostCommentが呼び出されない', () => {
+    const props = {
+      isOpen: true,
+      onClose: jest.fn(),
+      comments: [],
+      location: { user: { username: 'username' } },
+      postComment: jest.fn(),
+      enqueueSnackbar: jest.fn()
+    };
+    const wrapper = shallow(<Thread {...props} />).dive();
+
+    wrapper.find(TextField).simulate('change', {
       target: {
         value: ''
       }
     });
-    wrapper.find(TextField).at(1).find('input').simulate('change', {
-      target: {
-        value: 'password'
-      }
-    });
     wrapper.find(Button).simulate('click');
-    expect(onSubmit).not.toHaveBeenCalled();
-    expect(enqueueSnackbar).toHaveBeenCalled();
-  });
-
-  it('サインアップにおいてテキストを入力するとボタンをクリックした時にコールバック呼び出しされる', () => {
-    const onSubmit = jest.fn();
-    const wrapper = mount(<Form isLogin={false} onSubmit={onSubmit} />);
-    wrapper.find(TextField).first().find('input').simulate('change', {
-      target: {
-        value: 'email@email.com'
-      }
-    });
-    wrapper.find(TextField).at(1).find('input').simulate('change', {
-      target: {
-        value: 'username'
-      }
-    });
-    wrapper.find(TextField).at(2).find('input').simulate('change', {
-      target: {
-        value: 'password'
-      }
-    });
-    wrapper.find(Button).simulate('click');
-    expect(onSubmit).toHaveBeenCalled();
-  });
-
-  it('サインアップにおいてテキストを入力しないと関数が呼び出されない', () => {
-    const onSubmit = jest.fn();
-    const enqueueSnackbar = jest.fn();
-    const wrapper = mount(<Form isLogin={false} onSubmit={onSubmit} enqueueSnackbar={enqueueSnackbar} />);
-    wrapper.find(TextField).first().find('input').simulate('change', {
-      target: {
-        value: ''
-      }
-    });
-    wrapper.find(TextField).at(1).find('input').simulate('change', {
-      target: {
-        value: ''
-      }
-    });
-    wrapper.find(TextField).at(2).find('input').simulate('change', {
-      target: {
-        value: 'password'
-      }
-    });
-    wrapper.find(Button).simulate('click');
-    expect(onSubmit).not.toHaveBeenCalled();
-    expect(enqueueSnackbar).toHaveBeenCalled();
+    expect(props.postComment).not.toHaveBeenCalled();
+    expect(props.enqueueSnackbar).toHaveBeenCalled();
   });
 });
