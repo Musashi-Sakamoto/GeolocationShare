@@ -8,6 +8,11 @@ describe('ログインページ', () => {
         cy.url().should('eq', 'http://localhost:8000/login')
     })
 
+    it('必要な要素が表示されているか', () => {
+        cy.get(`input[name='username']`).should('exist')
+        cy.get(`input[name='password']`).should('exist')
+    })
+
     it('サインアップページに移動', () => {
         cy.contains('Signup').click()
         cy.wait(500)

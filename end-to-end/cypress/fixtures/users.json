@@ -1,0 +1,10 @@
+{
+  "verifiedUser": {
+    "username": "username1",
+    "password": "password"
+  },
+  "dummyUser": {
+    "username": "dummy",
+    "password": "dummypass"
+  }
+}
